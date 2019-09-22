@@ -1,85 +1,52 @@
-(function () {
-  const DRAW_TOOL = 'draw';
-  const ERASE_TOOL = 'erase';
+import React, { useEffect, useRef } from 'react';
+const DRAW_TOOL = 'draw';
+const ERASE_TOOL = 'erase';
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.querySelector('canvas');
-    const ctx = canvas.getContext('2d');
-
-    const config = {};
-
-
-    function init () {
-      resizeCanvas();
-      config.tool = DRAW_TOOL;
-      const tools = document.querySelectorAll('.tool');
-      tools.forEach(tool => {
-        tool.addEventListener('click', onToolClick);
-      });
-    }
-
-    function resizeCanvas () {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    function onToolClick (e) {
-      const selectedTool = e.target.dataset.type;
-      config.tool = selectedTool;
-    }
-
-    function drawLine (e) {
+const Canvas = ({ height, width, tool = DRAW_TOOL }) => {
+  let ctx = null;
+  const canvasEl = useRef(null),
+    _drawLine = (e) => {
       const x = e.clientX, y = e.clientY;
-
       ctx.lineTo(x, y);
       ctx.stroke();
-    }
-
-    function erase (e) {
+    },
+    _erase = (e) => {
       const x = e.clientX, y = e.clientY;
       ctx.clearRect(x - 25, y - 25, 50, 50);
-    }
-
-    function onMouseMove (e) {
-      stickToolIcon(e);
-      performToolAction(e);
-    }
-
-    function stickToolIcon (e) {
-      switch (config.tool) {
+    },
+    _handleMouseMove = (e) => {
+      switch (tool) {
         case ERASE_TOOL:
-          
-          break;
-      }
-    }
-
-    function performToolAction (e) {
-      switch (config.tool) {
-        case ERASE_TOOL:
-          erase(e);
-
+          _erase(e);
           break;
         case DRAW_TOOL:
         default:
-          drawLine(e);
+        _drawLine(e);
           break;
       }
-    }
-
-    function onMouseUp (e) {
-      document.removeEventListener('mousemove', onMouseMove);
-    }
-
-    function onMouseDown () {
-      // Check if this can be placed in a better place
+    },
+    _handleMouseUp = () => {
+      canvasEl.current.removeEventListener('mousemove', _handleMouseMove);
+    },
+    _handleMouseDown = () => {
       ctx.beginPath();
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
-    }
+      canvasEl.current.addEventListener('mousemove', _handleMouseMove);
+      canvasEl.current.addEventListener('mouseup', _handleMouseUp);
+    };
 
-    window.addEventListener('resize', resizeCanvas);
-    document.addEventListener('mousedown', onMouseDown);
+  useEffect(() => {
+    canvasEl.current.height = height;
+    canvasEl.current.width = width;
 
-    init();
-  });
-})();
+    ctx = canvasEl.current.getContext('2d');
+  }, [height, width]);
+
+  return (
+    <canvas
+      ref={canvasEl}
+      onMouseDown={_handleMouseDown}
+    />
+  );
+};
+
+export default Canvas;

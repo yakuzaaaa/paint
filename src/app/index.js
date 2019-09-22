@@ -1,15 +1,31 @@
-import React, { Component} from "react";
-import {hot} from "react-hot-loader";
-// import "./App.css";
+import React, { useState, useEffect } from "react";
+import { hot } from "react-hot-loader";
+import "./app.css";
+import Canvas from '../canvas';
 
-class App extends Component{
-  render(){
-    return(
-      <div className="App">
-        <h1> Hello, World! </h1>
-      </div>
-    );
-  }
-}
+const App = () => {
+  const [canvasHeight, setCanvasHeight] = useState(0);
+  const [canvasWidth, setCanvasWidth] = useState(0);
+  const onResize = () => {
+    setCanvasHeight(window.innerHeight);
+    setCanvasWidth(window.innerWidth);
+  };
 
-export default hot(module) (App);
+  useEffect(() => {
+    onResize();
+    window.addEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+    };
+  }, []);
+
+  return (
+    <Canvas
+      height={canvasHeight}
+      width={canvasWidth}
+      tool={"draw"}
+    />
+  );
+};
+
+export default hot(module)(App);
