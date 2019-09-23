@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { hot } from "react-hot-loader";
 import "./app.css";
 import Canvas from '../canvas';
 
@@ -28,4 +27,4 @@ const App = () => {
   );
 };
 
-export default hot(module)(App);
+export default App;
