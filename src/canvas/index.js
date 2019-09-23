@@ -56,10 +56,6 @@ const Canvas = ({ height, width, tool = DRAW_TOOL }) => {
     };
 
   useEffect(() => {
-    canvasEl.current.height = height;
-    canvasEl.current.width = width;
-
-
     // React does not have any API to pass event listener options
     // In this case, passive false
     // Chrome by default has touch events passive by default
@@ -67,13 +63,18 @@ const Canvas = ({ height, width, tool = DRAW_TOOL }) => {
     canvasEl.current.addEventListener('touchstart', _handleTouchStart, { passive: false });
     canvasEl.current.addEventListener('touchmove', _handleTouchMove, { passive: false });
 
-    ctx = canvasEl.current.getContext('2d');
-
-
+    // This hook has no dependency and thus only be called when component mounts
+    // and clean-up when component unmounts
     return () => {
       canvasEl.current.removeEventListener('touchstart', _handleTouchStart, { passive: false });
       canvasEl.current.removeEventListener('touchmove', _handleTouchMove, { passive: false });
     }
+  }, []);
+
+  useEffect(() => {
+    canvasEl.current.height = height;
+    canvasEl.current.width = width;
+    ctx = canvasEl.current.getContext('2d');
   }, [height, width]);
 
   return (
