@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 const DRAW_TOOL = 'draw';
 const ERASE_TOOL = 'erase';
 
-const Canvas = ({ height, width, tool = DRAW_TOOL }) => {
+const Canvas = ({ height, width, translation, tool = DRAW_TOOL }) => {
   let ctx = null,
     mouseClicked = false;
 
@@ -25,6 +25,7 @@ const Canvas = ({ height, width, tool = DRAW_TOOL }) => {
       _handleMouseDown(e);
     },
     _handleMouseMove = (e) => {
+      console.log(e);
       if (mouseClicked) {
         let location = {
           clientX: e.clientX,
@@ -75,6 +76,7 @@ const Canvas = ({ height, width, tool = DRAW_TOOL }) => {
     canvasEl.current.height = height;
     canvasEl.current.width = width;
     ctx = canvasEl.current.getContext('2d');
+    ctx.translate(translation.x, translation.y);
   }, [height, width]);
 
   return (
