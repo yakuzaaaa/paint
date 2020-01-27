@@ -25,7 +25,6 @@ const Canvas = ({ height, width, translation, tool = DRAW_TOOL }) => {
       _handleMouseDown(e);
     },
     _handleMouseMove = (e) => {
-      console.log(e);
       if (mouseClicked) {
         let location = {
           clientX: e.clientX,
