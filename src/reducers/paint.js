@@ -1,3 +1,4 @@
 export default function (state, action) {
-  // return reduced app state  
+  console.log(action);
+  return {...state, ...action.payload};
 }

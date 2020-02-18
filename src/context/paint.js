@@ -1,26 +1,39 @@
-import React from 'react';
-import {DRAW_TOOL} from '../constants';
+import React from "react";
+import paintReducer from "../reducers/paint";
+import { DRAW_TOOL } from "../constants";
+
+const paintAppDefaultState = {
+  canvas: {
+    width: 0,
+    height: 0,
+    translation: {
+      x: 0,
+      y: 0
+    }
+  },
+  toolbox: {
+    width: 0,
+    height: 0,
+    selectedTool: DRAW_TOOL
+  }
+};
 
 const PaintStateContext = React.createContext();
 const PaintDispatchContext = React.createContext();
 
-const paintAppDefaultState = {
-    tool: {
-        selectedTool: DRAW_TOOL
-    }
-};
+function PaintProvider({ children }) {
+  const [state, dispatch] = React.useReducer(
+    paintReducer,
+    paintAppDefaultState
+  );
 
-function PaintProvider ({children}) {
-    const [state, dispatch] = React.useReducer(paintReducer, paintDefaultState);
-    <PaintStateContext>
-        <PaintDispatchContext>
-            {children}
-        </PaintDispatchContext>
-    </PaintStateContext>
+  return (
+    <PaintStateContext.Provider value={state}>
+      <PaintDispatchContext.Provider value={dispatch}>
+        {children}
+      </PaintDispatchContext.Provider>
+    </PaintStateContext.Provider>
+  );
 }
 
-export {
-    PaintProvider,
-    PaintStateContext,
-    PaintDispatchContext
-};
+export { PaintProvider, PaintStateContext, PaintDispatchContext };

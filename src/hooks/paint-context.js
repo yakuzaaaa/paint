@@ -1,28 +1,25 @@
-import { useContext } from 'react';
-import PaintStateContext from '../context/paint-context';
-import PaintDispatchContext from '../context/paint-context';
+import { useContext } from "react";
+import { PaintStateContext } from "../context/paint";
+import { PaintDispatchContext } from "../context/paint";
 
 function usePaintState() {
-    const context = useContext(PaintStateContext);
+  const context = useContext(PaintStateContext);
 
-    if (!context) {
-        throw new Error('usePaintState must use around around a provider');
-    }
+  if (!context) {
+    throw new Error("usePaintState must use around around a provider");
+  }
 
-    return context;
+  return context;
 }
 
-function usePaintDisptach() {
-    const context = useContext(PaintStateContext);
+function usePaintDispatch() {
+  const context = useContext(PaintDispatchContext);
 
-    if (!context) {
-        throw new Error('usePaintDispatch must use around around a provider');
-    }
+  if (!context) {
+    throw new Error("usePaintDispatch must use around around a provider");
+  }
 
-    return context;
+  return context;
 }
 
-export {
-    usePaintState,
-    usePaintDisptach
-}
+export { usePaintState, usePaintDispatch };
