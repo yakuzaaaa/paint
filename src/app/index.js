@@ -29,24 +29,22 @@ const App = () => {
   }, []);
 
   return (
-    <PaintProvider>
+    <div className="container rows">
+      <div className="header"></div>
       <div className="container rows">
         <div className="header"></div>
-        <div className="container rows">
-          <div className="header"></div>
-          <Toolbox
-            width={appState.toolbox.width}
-            height={appState.toolbox.height}
-          />
-          <Canvas
-            height={appState.canvas.height}
-            width={appState.canvas.width}
-            translation={appState.canvas.translation}
-            tool={appState.toolbox.selectedTool}
-          />
-        </div>
+        <Toolbox
+          width={appState.toolbox.width}
+          height={appState.toolbox.height}
+        />
+        <Canvas
+          height={appState.canvas.height}
+          width={appState.canvas.width}
+          translation={appState.canvas.translation}
+          tool={appState.toolbox.selectedTool}
+        />
       </div>
-    </PaintProvider>
+    </div>
   );
 };
 
